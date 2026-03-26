@@ -44,3 +44,29 @@ jobs:
         run: |
           cd app-python
           pytest || true # allow failures for POC
+
+  sast:
+    name: SAST Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Bandit (Python SAST)
+        run: |
+          pip install bandit
+          bandit -r app-python/ -ll || true # soft-fail for POC; remove || true to enforce
+
+      - name: Run npm audit (Node.js dependency vulnerability scan)
+        run: |
+          cd app-node
+          npm ci
+          npm audit --audit-level=high || true # soft-fail for POC; remove || true to enforce
+
+      - name: Run Checkov (Terraform IaC SAST)
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: iac/
+          framework: terraform
+          soft_fail: true

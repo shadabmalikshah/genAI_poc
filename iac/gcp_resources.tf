@@ -3,12 +3,11 @@ resource "google_container_cluster" "primary" {
   location = var.region
   initial_node_count = 1
   remove_default_node_pool = true
-  min_master_version = "1.14.10-gke.27" # Deprecated for POC
 }
 
 resource "google_sql_database_instance" "default" {
   name = "poc-sql-instance"
-  database_version = "MYSQL_5_6" # Deprecated for POC
+  database_version = "MYSQL_8_0"
   region = var.region
   settings {
     tier = "db-f1-micro"
