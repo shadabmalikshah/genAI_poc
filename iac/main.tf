@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">= 0.12.0"
+  required_version = ">= 1.3.0"
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "3.5.0" # Deprecated version for POC
+      version = "~> 5.0"
     }
   }
 }
